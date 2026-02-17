@@ -11,11 +11,13 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 10000,
-      host: true
+      host: true,
+      allowedHosts: true
     },
     preview: {
       port: 10000,
-      host: true
+      host: true,
+      allowedHosts: true
     }
   };
 });
