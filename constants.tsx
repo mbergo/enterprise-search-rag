@@ -1,393 +1,281 @@
-import { Smartphone, Globe, Zap, Search, BrainCircuit, Layers, Database, Server, Filter, BarChart, HardDrive, Cpu, FileText, ArrowLeftRight } from 'lucide-react';
+import { 
+  ShoppingBag, Smartphone, Store, Database, Server, 
+  Cpu, Search, BarChart3, Workflow, Boxes, 
+  Zap, BrainCircuit, Globe, Filter, Sparkles,
+  Users, Briefcase, Settings, HardDrive
+} from 'lucide-react';
 import { PipelineNodeDef, PipelineEdgeDef, NodeDetail } from './types';
 
-// Coordinate System:
-// Left: User/Query | Center: Serving/Logic | Right: Data/Indexing
-
 export const NODES: PipelineNodeDef[] = [
-  // --- Frontend / Entry ---
-  { id: 'user_device', label: 'User Client', x: 50, y: 100, icon: Smartphone, description: 'Multi-tenant client app sending queries.', category: 'frontend' },
-  { id: 'api_gateway', label: 'API Gateway', x: 250, y: 100, icon: Globe, description: 'Auth, Rate Limiting, & Routing.', category: 'frontend' },
+  // --- Frontend (Top) ---
+  { id: 'storefront_ui', label: 'Web Storefront', x: 100, y: 50, icon: Globe, description: 'Next.js App. Barra de busca com Typeahead preditivo e resultados instantâneos.', category: 'frontend' },
+  { id: 'mobile_app', label: 'iOS/Android App', x: 400, y: 50, icon: Smartphone, description: 'Busca por voz e visual (Image Search) integrada.', category: 'frontend' },
+  { id: 'merchant_dashboard', label: 'Painel Lojista', x: 900, y: 50, icon: Store, description: 'Analytics de termos sem resultado e gestão de catálogo.', category: 'frontend' },
 
-  // --- Online Serving (The Query Pipeline) ---
-  { id: 'redis_cache', label: 'Redis Cache', x: 250, y: 250, icon: Zap, description: 'Token Bucket & Result Caching.', category: 'serving' },
-  { id: 'query_understanding', label: 'Query Processor', x: 450, y: 100, icon: Filter, description: 'Rewrite, Expand, Spellcheck.', category: 'serving' },
-  { id: 'hybrid_retriever', label: 'Hybrid Retrieval', x: 650, y: 100, icon: Search, description: 'Merge BM25 + Vector Scores.', category: 'serving' },
-  { id: 'ranking_engine', label: 'LTR Ranker', x: 850, y: 100, icon: BarChart, description: 'Learning-to-Rank Re-scoring.', category: 'serving' },
-  { id: 'rag_orchestrator', label: 'RAG GenAI', x: 1050, y: 100, icon: BrainCircuit, description: 'LLM Synthesis & Grounding.', category: 'serving' },
+  // --- Search Intelligence (Middle) ---
+  { id: 'search_api', label: 'Search API', x: 250, y: 220, icon: Search, description: 'Orquestrador de Consultas. Expansão de queries e filtros.', category: 'search_core' },
+  { id: 'reranker', label: 'Semantic Reranker', x: 500, y: 220, icon: Filter, description: 'Learning to Rank (LTR). Reordena Top-N resultados por relevância semântica.', category: 'search_core' },
+  { id: 'genai_gateway', label: 'RAG Service', x: 750, y: 220, icon: Sparkles, description: 'LLM Gateway. Gera guias de compra e resumos comparativos.', category: 'search_core' },
 
-  // --- Data Engineering (The Indexing Pipeline) ---
-  { id: 'kafka_backbone', label: 'Apache Kafka', x: 450, y: 400, icon: Layers, description: 'Event Streaming Backbone.', category: 'data_engineering' },
-  { id: 'flink_processor', label: 'Apache Flink', x: 650, y: 400, icon: ArrowLeftRight, description: 'Real-time Enrichment & Windowing.', category: 'data_engineering' },
-  
-  // --- Storage / Indices ---
-  { id: 'data_sources', label: 'Data Sources', x: 250, y: 550, icon: Database, description: 'DBs, PDFs, Crawlers.', category: 'storage' },
-  { id: 'search_index', label: 'Lexical Index', x: 850, y: 300, icon: FileText, description: 'Inverted Index (Lucene/Solr).', category: 'storage' },
-  { id: 'vector_db', label: 'Vector Memory', x: 850, y: 500, icon: Server, description: 'ANN Index (HNSW).', category: 'storage' },
-  { id: 'analytics_dw', label: 'Analytics DW', x: 1050, y: 400, icon: HardDrive, description: 'Offline Eval & Metrics.', category: 'storage' },
+  // --- Data & Infra (Bottom) ---
+  { id: 'connectors', label: 'Data Connectors', x: 50, y: 400, icon: Boxes, description: 'Sync Postgres/MySQL -> Elastic.', category: 'data_ops' },
+  { id: 'kafka_stream', label: 'Kafka Buffer', x: 250, y: 400, icon: Workflow, description: 'Stream de Catálogo e Eventos de Usuário.', category: 'data_ops' },
+  { id: 'ml_inference', label: 'ML Inference Node', x: 450, y: 400, icon: BrainCircuit, description: 'Geração de Embeddings (E5) e Sparse Vectors (ELSER).', category: 'data_ops' },
+  { id: 'elasticsearch', label: 'Elasticsearch Cluster', x: 650, y: 400, icon: Database, description: 'Motor Híbrido: BM25 + kNN + ES|QL. Sharding & Replication.', category: 'data_ops' },
+  { id: 'redis_cache', label: 'Redis Cache', x: 900, y: 220, icon: HardDrive, description: 'Cache Semântico para respostas de RAG. Reduz custos de LLM.', category: 'data_ops' },
+  { id: 'kibana_analytics', label: 'Kibana', x: 1100, y: 400, icon: BarChart3, description: 'Dashboards de Conversão e Latência.', category: 'data_ops' },
+
+  // --- Business / Teams (Right) ---
+  { id: 'team_search', label: 'Search Engineers', x: 1200, y: 150, icon: Cpu, description: 'Tuning de Relevância e Infra.', category: 'business' },
+  { id: 'team_merchandising', label: 'Merchandising', x: 1200, y: 300, icon: ShoppingBag, description: 'Regras de Negócio e Boosts.', category: 'business' },
 ];
 
 export const EDGES: PipelineEdgeDef[] = [
-  // Query Flow
-  { from: 'user_device', to: 'api_gateway', activeInFlow: true, payloadInfo: 'HTTP GET /search' },
-  { from: 'api_gateway', to: 'redis_cache', activeInFlow: true, payloadInfo: 'Check Cache / Rate Limit' },
-  { from: 'redis_cache', to: 'query_understanding', activeInFlow: true, payloadInfo: 'Cache Miss -> Process' },
-  
-  // Retrieval Flow (Fork)
-  { from: 'query_understanding', to: 'hybrid_retriever', activeInFlow: true, payloadInfo: 'Expanded Query' },
-  { from: 'hybrid_retriever', to: 'search_index', activeInFlow: true, payloadInfo: 'Lexical Query (BM25)' },
-  { from: 'hybrid_retriever', to: 'vector_db', activeInFlow: true, payloadInfo: 'Dense Vector (KNN)' },
-  
-  // Ranking & RAG
-  { from: 'hybrid_retriever', to: 'ranking_engine', activeInFlow: true, payloadInfo: 'Top-N Candidates' },
-  { from: 'ranking_engine', to: 'rag_orchestrator', activeInFlow: true, payloadInfo: 'Top-K Ranked Docs' },
-  { from: 'rag_orchestrator', to: 'api_gateway', activeInFlow: true, payloadInfo: 'Generated Answer' },
+  // Merchant Flow (New)
+  { from: 'merchant_dashboard', to: 'connectors', activeInFlow: true, payloadInfo: 'Catalog Update (SQL)' },
+  { from: 'merchant_dashboard', to: 'search_api', activeInFlow: false, payloadInfo: 'Merchandising Rules' },
+  { from: 'kibana_analytics', to: 'merchant_dashboard', activeInFlow: false, payloadInfo: 'Insights API' },
 
-  // Indexing Flow (Backbone)
-  { from: 'data_sources', to: 'kafka_backbone', activeInFlow: true, payloadInfo: 'CDC / Ingest' },
-  { from: 'kafka_backbone', to: 'flink_processor', activeInFlow: true, payloadInfo: 'Raw Events' },
-  { from: 'flink_processor', to: 'search_index', activeInFlow: true, payloadInfo: 'Tokenized Docs' },
-  { from: 'flink_processor', to: 'vector_db', activeInFlow: true, payloadInfo: 'Embeddings' },
+  // Ingestion Flow
+  { from: 'connectors', to: 'kafka_stream', activeInFlow: true, payloadInfo: 'CDC: Product Update' },
+  { from: 'kafka_stream', to: 'ml_inference', activeInFlow: true, payloadInfo: 'Pipeline Ingest' },
+  { from: 'ml_inference', to: 'elasticsearch', activeInFlow: true, payloadInfo: 'Index: Docs + Vectors' },
+
+  // Search Flow
+  { from: 'storefront_ui', to: 'search_api', activeInFlow: true, payloadInfo: 'Query: "Gaming Laptop"' },
+  { from: 'mobile_app', to: 'search_api', activeInFlow: true, payloadInfo: 'Query: Voice/Image' },
   
-  // Feedback Loop
-  { from: 'api_gateway', to: 'kafka_backbone', activeInFlow: false, payloadInfo: 'Clickstream Logs' },
-  { from: 'kafka_backbone', to: 'analytics_dw', activeInFlow: false, payloadInfo: 'Training Data' },
+  { from: 'search_api', to: 'ml_inference', activeInFlow: true, payloadInfo: 'Encode Query' },
+  { from: 'ml_inference', to: 'elasticsearch', activeInFlow: true, payloadInfo: 'Hybrid Search (kNN + BM25)' },
+  
+  { from: 'elasticsearch', to: 'reranker', activeInFlow: true, payloadInfo: 'Top 50 Hits' },
+  { from: 'reranker', to: 'genai_gateway', activeInFlow: true, payloadInfo: 'Top 10 (Context)' },
+  { from: 'genai_gateway', to: 'redis_cache', activeInFlow: true, payloadInfo: 'Cache Write' },
+  { from: 'redis_cache', to: 'storefront_ui', activeInFlow: true, payloadInfo: 'JSON: AI Response' },
+
+  // Analytics Loop
+  { from: 'storefront_ui', to: 'kafka_stream', activeInFlow: true, payloadInfo: 'Event: Click/Buy' },
+  { from: 'elasticsearch', to: 'kibana_analytics', activeInFlow: true, payloadInfo: 'Logs & Metrics' },
+
+  // Team Interactions (Dashed)
+  { from: 'team_search', to: 'elasticsearch', activeInFlow: false },
+  { from: 'team_search', to: 'ml_inference', activeInFlow: false },
+  { from: 'team_merchandising', to: 'kibana_analytics', activeInFlow: false },
+  { from: 'team_merchandising', to: 'search_api', activeInFlow: false },
 ];
 
 export const NODE_DETAILS: Record<string, NodeDetail> = {
-  user_device: {
-    title: 'Client / User Interface',
-    subtitle: 'Entry Point & Telemetry',
-    content: `## Search Relevance Signals
-The client is not just for display; it is the primary source of **Implicit Feedback** signals used for Ranking Tuning.
+  merchant_dashboard: {
+    title: 'Portal do Lojista (B2B)',
+    subtitle: 'Gestão de Catálogo & Analytics',
+    content: `**Fluxo de Ingestão**:
+O lojista cadastra ou atualiza produtos. Essas mudanças são gravadas no banco relacional e capturadas pelos **Connectors** (CDC) para indexação quase real-time.
 
-### Tracking Signals
-*   **CTR (Click-Through Rate)**: Ratio of clicks to impressions.
-*   **Dwell Time**: Time spent on a result. Long dwell time = Good result.
-*   **Pogo-sticking**: Clicking a result, then quickly navigating back. Strong negative signal (Bad result).
-*   **Zero-Result Rate**: Queries that returned no items. Used to identify missing content.
+**Search Analytics (Insights)**:
+O portal consome dados agregados do Kibana/Elastic para mostrar:
+*   **Termos sem resultado**: "O que meus clientes buscam e eu não tenho?"
+*   **Taxa de Conversão**: Quais produtos estão tendo views mas não vendas.
 
-### Autosuggest Strategy (Performance)
-*   **< 3 Chars**: **Prefix Indexing** (Trie/FST) from Redis. No network trip to search engine. Latency < 10ms.
-*   **> 3 Chars**: Triggers full pipeline (Infix matching, Fuzzy search).`,
-    algorithms: ['Debounce', 'Telemetry Tracking', 'Prefix Trie'],
-    techStack: ['React', 'WebSockets', 'OpenTelemetry'],
-    kpis: ['P99 Latency', 'Search Abandonment Rate'],
-    crossDomainImpact: {
-        inputs: [{ source: "API Gateway", benefit: "Receives processed results" }],
-        outputs: [{ target: "Kafka", improvement: "Sends interaction logs for LTR" }]
-    }
-  },
-  api_gateway: {
-    title: 'API Gateway',
-    subtitle: 'Scalability & API Integration',
-    content: `## Distributed Systems Patterns
-The gateway ensures reliability and scalability of the search platform.
-
-### Reliability Patterns
-*   **Rate Limiting**: Uses **Token Bucket** or **Leaky Bucket** algorithms to smooth out traffic spikes. Essential for multi-tenant isolation.
-*   **Circuit Breakers**: If the Ranking Engine starts timing out (e.g., >500ms), the breaker opens and returns raw results from the Retriever immediately, degrading quality but preserving uptime.
-*   **Bulkhead Pattern**: Isolates resources (threads) for different tenants so one heavy tenant doesn't crash the system.
-
-### API Integration
-*   **Contract**: Usually REST or GraphQL.
-*   **Auth**: Validates JWT and extracts \`tenant_id\` to enforce data silo policies at the query level (Filter: \`tenant_id: "acme"\`).`,
-    algorithms: ['Token Bucket', 'Circuit Breaker', 'Consistent Hashing'],
-    techStack: ['Kong', 'Nginx', 'Lua'],
-    kpis: ['Availability (99.99%)', 'Error Rate (5xx)'],
-    crossDomainImpact: {
-        inputs: [{ source: "User Device", benefit: "Raw Requests" }],
-        outputs: [{ target: "Redis", improvement: "Reduces backend load via cache" }]
-    }
+**Merchandising Self-Service**:
+Configuração de regras de negócio:
+*   **Boosting**: "Promover Tênis Nike no topo".
+*   **Pinning**: "Fixar iPhone 15 na posição 1".
+*   **Banners**: Associar banners a termos de busca.`,
+    algorithms: ['Rule-based Ranking', 'Aggregation Queries'],
+    techStack: ['React', 'Next.js', 'Elastic Charts'],
+    keyConcepts: ['Self-Service Merchandising', 'Zero Results Analysis', 'Catalog Lifecycle'],
+    kpis: ['Time-to-Market < 1min', 'Satisfação do Lojista (NPS)']
   },
   redis_cache: {
-    title: 'Redis Cache',
-    subtitle: 'Scalability & Performance',
-    content: `## Caching Strategies for Search
-Search workloads follow a **Zipfian Distribution** (Power Law) - 20% of queries account for 80% of traffic.
+    title: 'Redis Semantic Cache',
+    subtitle: 'Low-Latency RAG & Cost Optimization',
+    content: `**Semantic Caching**:
+Armazena pares de (Query Embedding, LLM Response).
+Quando uma nova query chega, calculamos a similaridade de cosseno com as chaves no cache. Se \`similarity > 0.9\`, retornamos a resposta em cache, economizando uma chamada ao LLM.
 
-### Caching Layers
-1.  **Result Cache**: Stores full JSON response. TTL: 5-10 mins. Key: \`hash(query + filters + tenant)\`.
-2.  **Filter Cache (Bitsets)**: Caches the list of docIDs for common filters (e.g., \`category:shoes\`). Used to quickly intersect with query results.
-3.  **Vector Cache**: Caches nearest neighbors for common vector embeddings to avoid expensive HNSW traversals.
+**Architecture**:
+*   **Write-Through**: Atualiza o cache assim que o LLM gera a resposta.
+*   **TTL (Time-To-Live)**: Dados expiram em 24h para garantir frescor.
 
-### Eviction Policies
-*   **LRU (Least Recently Used)**: Standard for search.
-*   **LFU (Least Frequently Used)**: Better for "Top of Funnel" persistent queries.`,
-    algorithms: ['LRU Eviction', 'Consistent Hashing', 'Bloom Filters'],
-    techStack: ['Redis Cluster', 'Resp Protocol'],
-    kpis: ['Cache Hit Ratio (>30%)', 'Latency (<2ms)'],
-    crossDomainImpact: {
-        inputs: [{ source: "API Gateway", benefit: "High throughput requests" }],
-        outputs: [{ target: "Query Processor", improvement: "Only forwards unique tail queries" }]
-    }
+**Benefits**:
+*   **Latência**: < 5ms (Cache) vs 1.5s (LLM).
+*   **Custo**: Redução de ~30% em tokens de saída.`,
+    algorithms: ['Cosine Similarity', 'Hashing', 'LRU Eviction'],
+    techStack: ['Redis Stack', 'RediSearch', 'RedisJSON'],
+    keyConcepts: ['Semantic Cache', 'TTL', 'Cost Optimization', 'Latency Reduction'],
+    kpis: ['Hit Ratio 40%', 'Latência p99 < 5ms']
   },
-  query_understanding: {
-    title: 'Query Processor',
-    subtitle: 'Query Understanding & Rewriting',
-    content: `## From "User Speak" to "Engine Speak"
-Raw user queries are often ambiguous or sparse. This stage fixes them.
+  elasticsearch: {
+    title: 'Elasticsearch Cluster (Layer de Dados)',
+    subtitle: 'Motor de Busca Híbrido & Vector DB Distribuído',
+    content: `**Core Engine & Distributed Systems**:
+O Elasticsearch opera como um sistema distribuído baseado no Lucene. Ele gerencia a **Indexação de Dados** e **Querying** em escala.
 
-### Query Rewriting Techniques
-*   **Normalization**: Lowercasing, removing accents, stemming ("running" -> "run").
-*   **Stop Word Removal**: Removing "the", "and", "a" (though modern transformers often keep them for context).
-*   **Spell Check**: Uses **Levenshtein Edit Distance** or SymSpell to fix typos.
-*   **Entity Recognition (NER)**: Identifies parts of speech. 
-    *   *Input*: "cheap nike shoes red"
-    *   *Output*: \`brand:nike\`, \`category:shoes\`, \`color:red\`, \`sort:price_asc\`.
+**Search Algorithms (Híbrido)**:
+*   **Lexical (BM25)**: Variação probabilística do TF-IDF. Otimizado para *Exact Match* (ex: SKU, Marca).
+*   **Vector Space Model (HNSW)**: Indexação de vetores densos usando *Hierarchical Navigable Small Worlds* para busca aproximada (ANN).
+*   **Reciprocal Rank Fusion (RRF)**: Algoritmo de normalização que combina o score do BM25 com o score de similaridade de cosseno (Vector) para um ranking unificado.
 
-### Query Expansion
-*   **Synonyms**: Maps "laptop" -> "notebook", "computer".
-*   **Vector Expansion**: Adds related terms found in the vector space to the boolean query to increase **Recall**.`,
-    algorithms: ['Levenshtein Distance', 'NER (Named Entity Recognition)', 'Stemming (Porter/Snowball)'],
-    techStack: ['Python', 'Spacy', 'HuggingFace'],
-    kpis: ['Zero-Result Reduction', 'Query Parsing Latency'],
-    crossDomainImpact: {
-        inputs: [{ source: "Redis", benefit: "Uncached queries" }],
-        outputs: [{ target: "Hybrid Retriever", improvement: "Structured Boolean + Vector query" }]
-    }
+**Scalability & Vector DB Sharding**:
+Os índices são divididos em **Shards**. Cada shard contém um grafo HNSW e um índice invertido. 
+*   **Routing**: Garante que documentos de um mesmo "Tenant" fiquem no mesmo shard.
+*   **Replication**: Réplicas primárias para escrita, réplicas secundárias para escalar leitura (Throughput).`,
+    algorithms: ['Okapi BM25 (TF-IDF Variant)', 'HNSW (Vector Graph)', 'RRF (Hybrid Fusion)'],
+    techStack: ['Elasticsearch 8.x', 'Lucene', 'JDK 21'],
+    keyConcepts: ['Vector DB Sharding', 'Inverted Index', 'Distributed Consensus (Zen)', 'Near Real-Time (NRT)'],
+    kpis: ['99.99% Availability', '<20ms Latência (p95)', '100M+ Docs']
   },
-  search_index: {
-    title: 'Lexical Index (Lucene)',
-    subtitle: 'Data Indexing & Search Clusters',
-    content: `## Deep Dive: Apache Lucene Internals
-The industry standard for Lexical Search (Elasticsearch/Solr/OpenSearch).
+  ml_inference: {
+    title: 'Nó de Inferência ML',
+    subtitle: 'ELSER & Dense Embedding Generation',
+    content: `**ML Model Deployment**:
+Infraestrutura para servir modelos transformadores otimizados para busca.
 
-### The Inverted Index
-Data structure mapping **Terms** to **Postings Lists** (lists of Document IDs).
-*   *Term*: "Search" -> *Docs*: [1, 5, 88, 92]
-*   Allows O(1) or O(log N) lookups for exact keywords.
+**ELSER (Elastic Learned Sparse EncodeR)**:
+A grande vantagem competitiva da Elastic. Diferente de vetores densos (que são "caixas pretas"), o ELSER realiza **Expansão Semântica** interpretável.
+*   **Vocabulary Mismatch**: Resolve o problema onde o usuário busca "tênis de corrida" e o produto é "calçado para maratona". O ELSER expande os termos semanticamente, ativando tokens relacionados no espaço vetorial esparso.
+*   **Zero-Shot Retrieval**: Modelo pré-treinado que performa bem em qualquer domínio sem necessidade de fine-tuning oneroso.
+*   **Mecanismo**: Gera um vetor esparso (Rank Features) onde cada dimensão é um termo latente com um peso, permitindo match rápido via índice invertido.
 
-### Search Clusters & Scalability
-*   **Sharding (Write Scaling)**: 
-    *   Splitting the index into N pieces (Shards).
-    *   **Hash-based**: \`hash(doc_id) % num_shards\`. Ensures even distribution but makes changing shard count hard.
-    *   **Time-based**: Useful for logs, new index per day.
-*   **Replication (Read Scaling)**: 
-    *   Copying shards to M nodes.
-    *   **Primary-Replica**: Writes go to Primary, then sync to Replicas. Reads load-balanced across all.
-    *   Increases **Availability**: If a node dies, a replica is promoted.
-*   **Node Roles**:
-    *   **Master**: Cluster state management (lightweight).
-    *   **Data**: Holds shards, performs CRUD/Search (CPU/IO heavy).
-    *   **Ingest/Coordinator**: Pre-processing and scatter-gather routing.
+**Dense Embeddings**:
+*   **e5-base / Gecko**: Convertem texto em vetores de 768/1024 dimensões para capturar intenção profunda.
 
-### Segment Architecture & Merging
-*   **Immutability**: Lucene segments are write-once.
-*   **Updates**: Actually a Delete + Insert. "Deleted" docs remain in \`.del\` files until merge.
-*   **Merging**: Background process merging small segments into large ones (LSM Tree style). Expensive (CPU/IO) but improves search speed.
-
-### Scoring: BM25 (Best Matching 25)
-An evolution of TF-IDF.
-*   **TF**: How often term appears in doc (Saturates).
-*   **IDF**: How rare is the term (Penalizes common words).
-*   **Norms**: Penalizes long fields.`,
-    algorithms: ['BM25', 'TF-IDF', 'Inverted Index', 'Segment Merging (LSM)', 'Consistent Hashing'],
-    techStack: ['Apache Solr', 'Elasticsearch', 'Apache Lucene'],
-    kpis: ['Indexing Rate (docs/sec)', 'Segment Merge Time', 'Replication Lag'],
-    crossDomainImpact: {
-        inputs: [{ source: "Flink", benefit: "Tokenized Documents" }],
-        outputs: [{ target: "Hybrid Retriever", improvement: "High Precision Candidates" }]
-    }
+**Performance & Scale**:
+Uso de **Quantização (int8)** para reduzir o tamanho do modelo na memória e acelerar a inferência sem perda significativa de precisão (Recall).`,
+    algorithms: ['ELSER (Learned Sparse)', 'Transformer Encoders', 'Model Quantization', 'Sparse Retrieval'],
+    techStack: ['PyTorch', 'ONNX Runtime', 'Elastic ML Nodes'],
+    keyConcepts: ['Semantic Expansion', 'Vocabulary Mismatch', 'Zero-shot Learning', 'Sparse vs Dense'],
+    kpis: ['1500 docs/seg (Throughput)', 'Zero-shot Learning']
   },
-  vector_db: {
-    title: 'Vector Memory',
-    subtitle: 'Vector Space Models & ANN',
-    content: `## Deep Dive: Semantic Search
-Solves the "Vocabulary Mismatch Problem".
+  reranker: {
+    title: 'Semantic Reranker',
+    subtitle: 'Precision Ranking & Cross-Encoders',
+    content: `**2nd Stage Ranking**:
+O Elasticsearch (1st Stage) foca em **Recall** (encontrar candidatos). O Reranker foca em **Precision** (ordenar perfeitamente).
 
-### Vector Space Model
-*   **Embedding Model**: Transformer (BERT) converting text to high-dimensional vectors (e.g. 768d).
-*   **Similarity**: Cosine Similarity (angle) or Dot Product (magnitude).
+**Architecture: Cross-Encoder vs Bi-Encoder**:
+*   **Bi-Encoder (Elasticsearch)**: Calcula vetores de Query e Documento *separadamente*. Rápido (ANN), mas perde nuances de interação termo-a-termo.
+*   **Cross-Encoder (Reranker)**: Alimenta a Query e o Documento *juntos* na rede neural (ex: BERT).
+    *   *Input*: \`[CLS] Query [SEP] Document [SEP]\`.
+    *   *Mecanismo*: As camadas de *Self-Attention* analisam a interação de cada palavra da query com cada palavra do documento.
+    *   *Resultado*: Score de relevância extremamente preciso (0 a 1).
 
-### Indexing: HNSW
-*   **Hierarchical Navigable Small World**: A multi-layer graph for Approximate Nearest Neighbor (ANN) search.
-*   Trades 100% accuracy for O(log N) speed.
+**Trade-off de Performance**:
+Cross-Encoders são computacionalmente caros. Não é viável rodar em 1M de documentos.
+*   *Estratégia*: Elastic recupera Top 50 -> Reranker reordena Top 50 -> Retorna Top 10 para o usuário.
 
-### Vector DB Sharding & Scalability
-When the index doesn't fit in RAM (e.g., 1B vectors = ~4TB), we must shard.
-*   **Horizontal Sharding**: Split vectors across N nodes.
-*   **Routing Strategies**:
-    *   **Scatter-Gather**: Query is sent to ALL shards. Coordinator merges Top-K. (High Recall, Higher CPU/Latency).
-    *   **Segment/Tenant Routing**: Data partitioned by \`tenant_id\`. Query routed only to relevant shard. (Low Latency).
-*   **IVF (Inverted File Index)**: A form of local partitioning where vectors are clustered (Voronoi cells). Search only visits nearest clusters.`,
-    algorithms: ['HNSW', 'IVF-PQ', 'Cosine Similarity', 'Consistent Hashing'],
-    techStack: ['Milvus', 'Qdrant', 'Faiss'],
-    kpis: ['Recall@K', 'QPS (Queries Per Second)'],
-    crossDomainImpact: {
-        inputs: [{ source: "Flink", benefit: "Document Embeddings" }],
-        outputs: [{ target: "Hybrid Retriever", improvement: "High Recall Candidates" }]
-    }
+**Learning to Rank (LTR)**:
+Combina o score semântico (Cross-Encoder) com features de negócio (Preço, Popularidade, Margem) usando modelos como XGBoost (LambdaMART).`,
+    algorithms: ['Cross-Encoder (BERT/RoBERTa)', 'Learning to Rank (LambdaMART)', 'ListMLE'],
+    techStack: ['Python', 'Triton Inference Server', 'Hugging Face Transformers'],
+    keyConcepts: ['Relevance Tuning', 'Precision vs Recall', 'Cross-Encoder vs Bi-Encoder', 'Distillation'],
+    kpis: ['+8% CTR na Posição 1', '100ms Latência Adicional', 'NDCG@10 Score']
   },
-  hybrid_retriever: {
-    title: 'Hybrid Retriever',
-    subtitle: 'Search Relevance Strategy',
-    content: `## Why Hybrid?
-Combines **Precision** (Lexical/BM25) with **Recall** (Semantic/Vector).
+  search_api: {
+    title: 'Search API Orchestrator',
+    subtitle: 'API Integration & Query Understanding',
+    content: `**API Gateway & Composition**:
+Ponto de entrada REST/GraphQL. Responsável por "Hydration" (buscar preços em tempo real no Redis) e "Policy" (Circuit Breakers).
 
-### Fusion Algorithms
-**RRF (Reciprocal Rank Fusion)**:
-*   \`Score = 1 / (k + Rank_BM25) + 1 / (k + Rank_Vector)\`
-*   Robust, zero-calibration needed.
-
-### Building Hybrid Search (Implementation)
-1.  **Parallel Execution**: Fire BM25 and Vector Search simultaneously (Scatter-Gather).
-2.  **Score Normalization**:
-    *   BM25 scores are unbounded (0 to infinity).
-    *   Vector scores are normalized (0.0 to 1.0).
-    *   *Fix*: Apply **Min-Max Scaling** or **Sigmoid** to BM25 scores before linear combination.
-3.  **Windowing**:
-    *   Fetch Top-100 from Vector.
-    *   Fetch Top-100 from BM25.
-    *   Pool is 200 docs (max).
-4.  **Dedup**: Remove duplicates by DocID before passing to Ranking Engine.`,
-    algorithms: ['Reciprocal Rank Fusion (RRF)', 'Min-Max Normalization', 'WAND'],
-    techStack: ['Java', 'Elasticsearch Plugin'],
-    kpis: ['Mean Reciprocal Rank (MRR)', 'Recall@100'],
-    crossDomainImpact: {
-        inputs: [{ source: "Query Processor", benefit: "Dual Query Intent" }],
-        outputs: [{ target: "Ranking Engine", improvement: "Broad candidate set (Top-1000)" }]
-    }
+**Search Relevance Tuning (Pre-Query)**:
+*   **Query Understanding**: Detecta intenção (Navegacional vs Informacional).
+*   **Category Prediction**: "Tênis Nike" -> Filtra \`category:shoes\` automaticamente.
+*   **PageRank Concepts**: Aplica boost em produtos populares (Sales Rank) sobre o score de relevância textual.`,
+    algorithms: ['Query Expansion', 'Named Entity Recognition', 'Static Rank Boosting'],
+    techStack: ['Node.js', 'FastAPI', 'Redis (Cache)'],
+    keyConcepts: ['API Gateway', 'Circuit Breaker', 'Query Rewriting', 'PageRank Integration'],
+    kpis: ['15k QPS', 'Cache Hit Ratio 40%']
   },
-  ranking_engine: {
-    title: 'LTR (Learning to Rank)',
-    subtitle: 'Ranking & Relevance Tuning',
-    content: `## Deep Dive: LTR Pipeline
-Retrieval gets the "Possible" documents. Ranking finds the "Best".
-
-### The Model: LambdaMART
-*   A gradient boosted tree approach (like XGBoost) adapted for ranking.
-*   Optimizes **NDCG** directly using pairwise gradients.
-
-### ML Model Deployment & Inference
-*   **Training-Serving Skew**: Logic for features (e.g., "Click Rate last 7 days") must be identical in Spark (Training) and Java/C++ (Inference).
-*   **Model Stores**: Models are versioned (v1.2.3) in S3. The engine hot-reloads new models without downtime (Canary Rollout).
-*   **Inference Engines**:
-    *   **ONNX Runtime**: Standard format for model portability.
-    *   **Triton Inference Server**: For high-throughput GPU scoring.
-*   **Feature Store**: Low-latency KV store (Redis) serving user/item features to the model in <2ms.`,
-    algorithms: ['LambdaMART', 'XGBoost', 'ListNet', 'ONNX Runtime'],
-    techStack: ['XGBoost', 'LightGBM', 'TensorFlow Ranking'],
-    kpis: ['NDCG@10', 'P99 Inference Latency (<10ms)'],
-    crossDomainImpact: {
-        inputs: [{ source: "Hybrid Retriever", benefit: "Candidate Set" }],
-        outputs: [{ target: "RAG Orchestrator", improvement: "Top-5 most relevant context chunks" }]
-    }
-  },
-  kafka_backbone: {
-    title: 'Apache Kafka',
+  kafka_stream: {
+    title: 'Kafka Event Backbone',
     subtitle: 'Data Pipeline Integration',
-    content: `## Data Consistency & Distributed Logs
-Decouples the "Write" path (Indexing) from the "Read" path (Serving).
+    content: `**Data Pipeline & Consistency**:
+Garante o desacoplamento entre os sistemas de escrita (ERP/Catalog) e leitura (Search Engine).
 
-### CDC (Change Data Capture)
-*   Instead of polling the DB ("SELECT * WHERE updated_at > now()"), we tail the database **WAL (Write Ahead Log)**.
-*   Tools: Debezium, Maxwell.
-*   Ensures we capture **Hard Deletes**, not just updates.
-
-### Partitioning Strategy
-*   Kafka topics are partitioned (sharded).
-*   **Keying**: We must key messages by \`DocumentID\`. This ensures all updates for Doc #123 go to the same partition.
-*   **Ordering**: Kafka guarantees ordering *within* a partition. This is critical so we don't overwrite a "New Version" with an "Old Version".`,
-    algorithms: ['Log-Structured Storage', 'Consistent Hashing', 'ISR (In-Sync Replicas)'],
+**Distributed Systems Patterns**:
+*   **Backpressure**: Buffer para picos de atualização de catálogo.
+*   **Event Sourcing**: O estado do índice é uma projeção dos eventos no log do Kafka.
+*   **Partitioning**: Particionamento por Product ID para garantir ordem de processamento.`,
+    algorithms: ['Log Compaction', 'Partitioning', 'Consumer Groups'],
     techStack: ['Apache Kafka', 'Confluent Schema Registry'],
-    kpis: ['Replication Lag', 'Throughput (MB/s)'],
+    keyConcepts: ['Eventual Consistency', 'Stream Processing', 'Backpressure', 'CDC'],
+    kpis: ['< 2s Latência de Indexação', 'Zero Data Loss']
+  },
+  kibana_analytics: {
+    title: 'Kibana / Analytics',
+    subtitle: 'Search Quality Metrics & Observability',
+    content: `**Search Quality Evaluation**:
+Monitoramento contínuo da eficácia do algoritmo.
+
+**Golden Metrics**:
+*   **nDCG (Normalized Discounted Cumulative Gain)**: Mede a qualidade do ranking considerando a posição.
+*   **MRR (Mean Reciprocal Rank)**: Onde aparece o primeiro resultado relevante?
+*   **Zero Results Rate**: % de buscas que retornam vazio (falha de indexação ou catálogo).
+*   **CTR@k**: Taxa de clique nas top k posições.
+
+**A/B Testing**:
+Comparação de performance entre o algoritmo "Baseline" (BM25) e "Challenger" (Híbrido).`,
+    algorithms: ['Click Models', 'Time Series Analysis', 'Anomaly Detection'],
+    techStack: ['Kibana', 'Lens', 'Elastic APM'],
+    keyConcepts: ['nDCG', 'A/B Testing', 'Clickthrough Rate', 'Search Quality'],
+    kpis: ['Dashboards em Tempo Real']
+  },
+  genai_gateway: {
+    title: 'RAG & GenAI Service',
+    subtitle: 'Hybrid Search Integration',
+    content: `**Building a Hybrid Search (RAG)**:
+Integração final onde o "Retrieval" (Elastic) encontra o "Generation" (LLM).
+
+**Fluxo**:
+1.  **Retrieve**: Elastic busca Top 5 chunks de manuais/reviews.
+2.  **Augment**: Injeta chunks no Context Window do LLM.
+3.  **Generate**: LLM produz resposta fundamentada.
+
+**Desafios**:
+*   **Context Window Management**: Selecionar apenas os trechos mais densos de informação.
+*   **Hallucination Guardrails**: Verificar se a resposta está ancorada nos dados recuperados.`,
+    algorithms: ['Chain-of-Thought', 'Prompt Engineering', 'Context Stuffing'],
+    techStack: ['Gemini Pro', 'LangChain', 'Elastic Connector'],
+    keyConcepts: ['RAG Pipeline', 'Context Window', 'Prompt Engineering'],
+    kpis: ['+12% Conversão em Cauda Longa', '< 1.5s Tempo de Geração']
+  },
+  storefront_ui: {
+    title: 'Storefront Web',
+    subtitle: 'Client-Side Integration',
+    content: `**API Integration**:
+Consumo de APIs de busca com suporte a *Server-Side Rendering (SSR)* para SEO.
+
+**Features**:
+*   **Instant Search**: Resultados aparecem enquanto digita (Search-as-you-type).
+*   **Filtros Dinâmicos (Facets)**: Elastic retorna agregações em tempo real (Marcas, Cores, Preços).`,
+    algorithms: ['Debouncing', 'Prefetching'],
+    techStack: ['React', 'Next.js', 'Vercel'],
+    keyConcepts: ['Client-Side Caching', 'Optimistic UI', 'SSR'],
     crossDomainImpact: {
-        inputs: [{ source: "Data Sources", benefit: "Raw Change Stream" }],
-        outputs: [{ target: "Flink", improvement: "Ordered, durable event stream" }]
+        inputs: [
+            { source: 'GenAI Gateway', benefit: 'Exibe "Dica do Especialista" gerada por IA no topo da busca.' },
+            { source: 'Elasticsearch', benefit: 'Recebe Facets e Agregações em <20ms.' }
+        ],
+        outputs: [
+            { target: 'Kafka Buffer', improvement: 'Envia dados de clique para treinar modelos de Learning to Rank.' }
+        ]
     }
   },
-  flink_processor: {
-    title: 'Apache Flink',
-    subtitle: 'Real-time Processing & Indexing',
-    content: `## Stream Processing
-Flink provides the computational power to transform raw DB rows into Searchable Documents.
+  connectors: {
+    title: 'Connectors & Ingestion',
+    subtitle: 'ETL & Data Indexing',
+    content: `**Data Indexing Strategies**:
+Processo de transformar dados relacionais (SQL) em documentos JSON desnormalizados para busca.
 
-### Indexing Pipeline Steps
-1.  **De-normalization**: Joining related tables. (e.g., Join "Product" with "Brand" and "Inventory").
-2.  **Enrichment**: Calling external APIs (e.g., Vision API for image tags).
-3.  **Vectorization**: Calling Embedding Model to generate vectors.
-
-### Exactly-Once Semantics
-*   Ensures documents are not indexed twice (duplicates) or lost.
-*   Uses **Chandy-Lamport** algorithm for distributed state snapshots.
-
-### Backpressure
-*   If the Vector DB is slow, Flink manages backpressure to slow down consumption from Kafka, preventing OOM (Out of Memory) crashes.`,
-    algorithms: ['Watermarking', 'Tumbling Windows', 'Chandy-Lamport Snapshots'],
-    techStack: ['Apache Flink', 'RocksDB', 'Java'],
-    kpis: ['Processing Latency', 'Checkpoint Duration'],
-    crossDomainImpact: {
-        inputs: [{ source: "Kafka", benefit: "Raw Events" }],
-        outputs: [{ target: "Search Indices", improvement: "Ready-to-index batches" }]
-    }
+**Techniques**:
+*   **Change Data Capture (CDC)**: Monitora logs de transação do banco para latência mínima.
+*   **Bulk API**: Uso da API de lote do Elastic para maximizar throughput de indexação.`,
+    algorithms: ['CDC (Change Data Capture)'],
+    techStack: ['Elastic Agent', 'Logstash'],
+    keyConcepts: ['ETL', 'Denormalization', 'Bulk Indexing'],
+    kpis: ['10M SKUs Sincronizados']
   },
-  analytics_dw: {
-    title: 'Analytics DW',
-    subtitle: 'Search Quality Metrics',
-    content: `## Search Relevance Metrics
-How do we know if search is "Good"?
-
-### Offline Metrics (Golden Sets)
-*   **Precision@K**: % of top-K results that are relevant.
-*   **Recall**: % of *all* relevant items that were found.
-*   **NDCG (Normalized Discounted Cumulative Gain)**:
-    *   Measures ranking quality.
-    *   Rewards relevant items at the top.
-    *   Penalizes relevant items at the bottom.
-*   **MRR (Mean Reciprocal Rank)**: 1 / Rank of the first relevant item. Good for "Known Item Search".
-
-### Online Metrics (A/B Testing)
-*   **CTR**: Click-through rate.
-*   **Conversion Rate**: Purchases / Searches.
-*   **SAT (Satisfied) Clicks**: Clicks with dwell time > 30s.`,
-    algorithms: ['Counterfactual Estimation', 'Wilson Score Interval'],
-    techStack: ['Snowflake', 'BigQuery', 'dbt'],
-    kpis: ['NDCG', 'MAP (Mean Average Precision)'],
-    crossDomainImpact: {
-        inputs: [{ source: "Kafka", benefit: "Interaction Logs" }],
-        outputs: [{ target: "Ranking Engine", improvement: "Training data for LTR models" }]
-    }
-  },
-  data_sources: {
-    title: 'Data Sources',
-    subtitle: 'System of Record',
-    content: `## Data Ingestion Challenges
-The source of truth.
-
-### Challenges
-*   **Schema Drift**: Upstream team changes a column name. Pipeline breaks. Solution: Schema Registry.
-*   **Throughput**: Initial "Bootstrap" (re-indexing 100M items) vs Incremental updates.
-*   **Polyglot Persistence**: Handling data from SQL (Relational), NoSQL (Document), and Object Stores (Images/PDFs).`,
-    algorithms: ['CDC (Change Data Capture)', 'Snapshotting'],
-    techStack: ['PostgreSQL', 'Debezium', 'MongoDB'],
-    kpis: ['Data Freshness', 'Source Availability'],
-    crossDomainImpact: {
-        inputs: [],
-        outputs: [{ target: "Kafka", improvement: "Source of Truth" }]
-    }
-  },
-  rag_orchestrator: {
-    title: 'RAG Orchestrator',
-    subtitle: 'Generative AI Integration',
-    content: `## Retrieval-Augmented Generation
-Combines Parametric Memory (LLM Weights) with Non-Parametric Memory (Search Index).
-
-### The "RAG" Stack
-1.  **Retrieve**: Get top-K chunks from Search.
-2.  **Augment**: Insert chunks into the Prompt Context.
-3.  **Generate**: LLM synthesizes answer.
-
-### Challenges
-*   **Context Window Limits**: We can't feed 100 documents. Ranking must be excellent to find the top 5.
-*   **Hallucination**: Model making things up. Fixed by "Grounding" (citing sources).
-*   **Latency**: LLMs are slow (Tokens/sec). We stream the response to the user (TTFT - Time To First Token).`,
-    algorithms: ['Prompt Chaining', 'Self-Consistency', 'Token Generation'],
-    techStack: ['LangChain', 'Google Gemini', 'LlamaIndex'],
-    kpis: ['TTFT (Time To First Token)', 'Faithfulness Score'],
-    crossDomainImpact: {
-        inputs: [{ source: "Ranking Engine", benefit: "High quality context" }],
-        outputs: [{ target: "API Gateway", improvement: "Natural language answer" }]
-    }
-  }
+  mobile_app: { title: 'App Mobile', subtitle: 'Canal Nativo', content: 'Foco em busca visual e voz.', algorithms: [], techStack: ['Flutter'] },
+  team_search: { title: 'Time de Engenharia', subtitle: 'Search Ops', content: 'Mantém o cluster saudável e ajusta pesos de relevância.', algorithms: [], techStack: [] },
+  team_merchandising: { title: 'Time de Negócios', subtitle: 'Estratégia', content: 'Define campanhas e regras de "Pinning" (fixar produtos no topo).', algorithms: [], techStack: [] },
 };

@@ -63,7 +63,7 @@ const DataInspector: React.FC<DataInspectorProps> = ({
     <div className="h-full flex flex-col bg-tech-900 rounded-xl border border-tech-700 shadow-xl overflow-hidden">
       <div className="bg-tech-800 px-4 py-2 border-b border-tech-700 flex items-center justify-between">
         <div className="flex items-center gap-2">
-           <Code className="w-3.5 h-3.5 text-ifood-red" />
+           <Code className="w-3.5 h-3.5 text-search-red" />
            <span className="text-xs font-bold text-slate-200">{data.title}</span>
         </div>
         <span className="text-[9px] text-emerald-400 font-mono font-bold">

@@ -1,26 +1,29 @@
 import React from 'react';
 
 export type NodeType = 
-  // User & Entry
-  | 'user_device'
-  | 'api_gateway'
+  // User Interfaces
+  | 'storefront_ui' 
+  | 'mobile_app' 
+  | 'merchant_dashboard'
   
-  // Fast Data / Caching
-  | 'redis_cache'
+  // Data / Infrastructure
+  | 'kafka_stream'      // Event Buffer
+  | 'logstash_etl'      // Ingestion Pipeline
+  | 'ml_inference'      // Text Embedding / ELSER
+  | 'elasticsearch'     // The Core Engine (Vector Store + Search)
+  | 'kibana_analytics'  // Visualization
+  | 'connectors'        // Database Sync
+  | 'redis_cache'       // RAG Cache
   
-  // Query Pipeline (Online)
-  | 'query_understanding'
-  | 'hybrid_retriever' // The "Search" Node
-  | 'ranking_engine'   // LTR
-  | 'rag_orchestrator' // LLM
+  // Logic & Intelligence
+  | 'search_api'        // Query Construction
+  | 'reranker'          // LTR / Semantic Rerank
+  | 'genai_gateway'     // LLM Integration (RAG)
   
-  // Data / Indexing Pipeline (Offline/Nearline)
-  | 'kafka_backbone'
-  | 'flink_processor'
-  | 'vector_db'        // Semantic Index
-  | 'search_index'     // Lexical Index (Elastic/Solr)
-  | 'data_sources'     // DBs/Connectors
-  | 'analytics_dw';    // Data Warehouse
+  // Business Units
+  | 'team_search'
+  | 'team_merchandising'
+  | 'team_infra';
 
 export interface PipelineNodeDef {
   id: NodeType;
@@ -29,7 +32,7 @@ export interface PipelineNodeDef {
   y: number;
   icon: React.ComponentType<any>;
   description: string;
-  category: 'frontend' | 'serving' | 'data_engineering' | 'storage';
+  category: 'frontend' | 'search_core' | 'data_ops' | 'business';
 }
 
 export interface PipelineEdgeDef {
@@ -40,17 +43,20 @@ export interface PipelineEdgeDef {
   payloadInfo?: string; 
 }
 
+export interface CrossDomainImpact {
+  inputs: { source: string; benefit: string }[]; 
+  outputs: { target: string; improvement: string }[];
+}
+
 export interface NodeDetail {
   title: string;
   subtitle: string;
   content: string; 
   algorithms: string[];
   techStack: string[];
+  keyConcepts?: string[]; // New field for Interview Topics
   kpis?: string[]; 
-  crossDomainImpact?: {
-    inputs: { source: string; benefit: string }[];
-    outputs: { target: string; improvement: string }[];
-  };
+  crossDomainImpact?: CrossDomainImpact; 
 }
 
 export interface SimulationStepData {
@@ -59,7 +65,7 @@ export interface SimulationStepData {
   description: string;
   visualType?: 'json' | 'ranking';
   impact?: string; 
-  roiMetric?: { label: string; value: string; trend: 'up' | 'down' };
+  roiMetric?: { label: string; value: string; trend: 'up' | 'down' }; 
 }
 
 export interface SimulationStepDef {

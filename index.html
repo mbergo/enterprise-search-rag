@@ -3,17 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Estratégia de Plataforma de IA iFood - Mapa Interativo</title>
+    <title>Elasticsearch RAG Engine - Architecture Map</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              ifood: {
-                red: '#EA1D2C',
-                darkred: '#C2101F',
-                bg: '#F7F2F2',
+              elastic: {
+                teal: '#0077CC', // Elastic Blue/Teal mix
+                yellow: '#FEC514', // Elastic Yellow
+                ink: '#343741',
+              },
+              search: { // Keeping legacy reference for compatibility or fallback, effectively replaced by generic 'tech'
+                 red: '#0077CC', 
+                 darkred: '#0055aa',
+                 bg: '#F7F2F2',
               },
               slate: {
                 850: '#1e293b',
@@ -60,7 +65,7 @@
         border-radius: 10px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #EA1D2C; 
+        background: #0077CC; 
       }
     </style>
   <script type="importmap">
