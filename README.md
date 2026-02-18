@@ -1,43 +1,55 @@
-# search AI Platform Strategy - Interactive Map
+# Enterprise Search RAG - Interactive Architecture Map
 
-An interactive, educational visualization of a production-grade AI/RAG pipeline (simulating search's architecture). This application visualizes how data flows from Consumer Apps through Kafka, Feature Stores, and AI Models (RecSys, RAG, Risk) to deliver real-time results.
+This project is an interactive visualization of an enterprise-grade Search + RAG platform.
+It helps explain, end-to-end, how data and decisions flow through a modern AI search stack:
 
-It integrates with **Google Gemini API** to simulate RAG responses and generate UI assets (images/videos) dynamically.
+- Consumer interactions and event ingestion
+- Indexing and retrieval (including hybrid search paths)
+- RAG orchestration with model inference
+- Risk/compliance checkpoints and business KPI impact
+
+The app can also call **Google Gemini API** to simulate AI support answers and media generation.
+
+## What this project is useful for
+
+- Demonstrating Search/RAG architecture to technical and non-technical stakeholders
+- Presenting platform strategy and ROI trade-offs in a visual way
+- Exploring step-by-step lifecycle simulations for product, data, and AI teams
 
 ## Features
 
-*   **Interactive Architecture Graph**: Zoom, pan, and explore nodes (Kafka, Vertex AI, Redis, etc.).
-*   **Step-by-Step Simulation**: Visualizes the lifecycle of an order (Discovery -> Transaction -> Fulfillment -> Support).
-*   **RAG & GenAI Integration**: Uses Gemini to simulate support agent responses and generate videos.
-*   **Real-time ROI Inspector**: View simulated metrics (latency, conversion lift, GMV impact) for every step.
+- **Interactive architecture graph**: Zoom, pan, and explore nodes (Kafka, Vertex AI, Redis, etc.)
+- **Step-by-step simulation**: Visualizes the lifecycle of an order (Discovery -> Transaction -> Fulfillment -> Support)
+- **RAG & GenAI integration**: Uses Gemini to simulate support agent responses and generate videos
+- **Real-time ROI inspector**: View simulated metrics (latency, conversion lift, GMV impact) for every step
 
 ## Prerequisites
 
-*   **Node.js** (v18 or higher)
-*   **npm** (or yarn/pnpm)
-*   **Google Gemini API Key**: You need a paid API key from Google AI Studio (for Veo video generation) or a standard key for text generation.
+- **Node.js** (v18+)
+- **npm**
+- **Google Gemini API Key** (optional for AI-powered features)
 
-## 🚀 Quick Start (Local)
+## 🚀 Quick Start (Local Development)
 
-1.  **Install Dependencies**
+1. **Install dependencies**
     ```bash
     npm install
     ```
 
-2.  **Configure API Key**
+2. **Configure API key**
     You can set the API key in a `.env` file or pass it inline.
     Create a `.env` file in the root directory:
     ```env
     API_KEY=your_google_api_key_here
     ```
 
-3.  **Run Development Server**
+3. **Run development server**
     ```bash
     npm run dev
     ```
     Open `http://localhost:10000` in your browser.
 
-## 🛠 Building for Production
+## 🛠 Build for Production
 
 To create a static build optimized for deployment:
 
@@ -52,43 +64,35 @@ To create a static build optimized for deployment:
     npm run preview
     ```
 
-## 🐳 Running with Docker
+## 🌐 Deploying to GitHub Pages
 
-This project includes a `Dockerfile` for easy containerization.
+This repository now includes a GitHub Actions workflow at:
 
-### Option 1: Using Make (Easiest)
+`/.github/workflows/deploy-pages.yml`
 
-If you have `make` installed:
+It builds the Vite app and deploys `dist/` to GitHub Pages on pushes to `main` (or manually via `workflow_dispatch`).
 
-*   **Build & Run**:
-    ```bash
-    API_KEY=your_key make docker-run
-    ```
+### One-time repository setup
 
-### Option 2: Manual Docker Commands
+1. In **GitHub > Settings > Pages**, set **Source** to **GitHub Actions**.
+2. Ensure the default branch is `main`.
 
-1.  **Build Image**:
-    ```bash
-    docker build -t search-ai-viz .
-    ```
+After setup, the app should be published at:
 
-2.  **Run Container**:
-    ```bash
-    docker run -p 10000:10000 -e API_KEY=your_actual_api_key search-ai-viz
-    ```
+`https://mbergo.github.io/enterprise-search-rag/`
 
 ## 📂 Project Structure
 
-*   `src/components/PipelineVisualizer.tsx`: The main interactive graph engine (SVG + React).
-*   `src/constants.tsx`: Definitions of nodes, edges, and static content.
-*   `src/services/geminiService.ts`: Integration with Google GenAI SDK.
-*   `src/App.tsx`: Main application logic and simulation state machine.
+- `App.tsx`: Main application logic and simulation state machine
+- `constants.tsx`: Definitions of nodes, edges, and static content
+- `services/geminiService.ts`: Integration with Google GenAI SDK
+- `components/`: Reusable UI components
 
 ## Technologies
 
-*   **Frontend**: React 19, Vite, TailwindCSS (CDN).
-*   **AI**: Google GenAI SDK (Gemini 2.5/3.0 Models).
-*   **Icons**: Lucide React.
+- **Frontend**: React 19, Vite, TailwindCSS (CDN)
+- **AI**: Google GenAI SDK (Gemini models)
+- **Icons**: Lucide React
 
 ## License
 
