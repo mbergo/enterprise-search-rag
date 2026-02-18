@@ -358,7 +358,7 @@ const App: React.FC = () => {
                         </div>
                         <div>
                             <h3 className="text-sm font-bold text-white">Simulação de Query</h3>
-                            <p className="text-xs text-slate-400">Fluxo: Ingestão -> Indexação -> Busca Híbrida -> RAG</p>
+                            <p className="text-xs text-slate-400">Fluxo: Ingestão -&gt; Indexação -&gt; Busca Híbrida -&gt; RAG</p>
                         </div>
                     </div>
 
